@@ -119,10 +119,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.7/axios.min.js" integrity="sha512-NQfB/bDaB8kaSXF8E77JjhHG5PM6XVRxvHzkZiwl3ddWCEPBa23T76MuWSwAJdMGJnmQqM0VeY9kFszsrBEFrQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>   
-    var dataSource = {
+     var dataSource = {
         datasets: [
             {
-            data: [30, 350, 90],
+            data: [],
             backgroundColor: [
                 '#ffcd56',
                 '#ff6384',
@@ -133,11 +133,7 @@
     ],
     
         // These labels appear in the legend and in the tooltips when hovering different arcs
-        labels: [
-            'Eat out',
-            'Rent',
-            'Groceries'
-        ]
+        labels:[]
     };
 
     function createChart() {
@@ -151,16 +147,23 @@
 
     function getBudget() {
         axios.get('/budget')
-        .then(function (res) {
-            console.log(res);
-            for (var i = 0; i < res.data.myBudget.length; i++) {
-                dataSource.datasets[0].data[i] = res.data.myBudget[i].budget;
-                dataSource.labels[i] = res.data.myBudget[i].title;
-            }
-            createChart();
-        });
-    }
+            .then(function (res) {
+                console.log('Received data from /budget:', res.data);
+                // Check if myBudget is an array with at least one element
+                if (Array.isArray(res.data) && res.data.length > 0) {
+                    dataSource.datasets[0].data = res.data.map(item => item.budget);
+                    dataSource.labels = res.data.map(item => item.title);
+                    createChart();
+                } else {
+                    console.error('Invalid myBudget data structure or empty array.');
+                }
+            })
+            .catch(function (error) {
+                console.error('Error fetching budget data:', error);
+            });
+}
     getBudget();
     </script> 
 </body>
 </html>
+
