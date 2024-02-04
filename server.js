@@ -29,7 +29,7 @@ app.get('/hello', (req, res) => {
 });
 
 app.get('/budget', (req, res) => {
-    const dataFilePath = path.join(__dirname, 'budget_data.json');
+    const dataFilePath = path.join(__dirname, '/budget_data.json');
   
     fs.readFile(dataFilePath, 'utf8', (err, data) => {
       if (err) {
@@ -61,6 +61,32 @@ app.get('/budget_data.json', (req, res) => {
       }
 
       res.json(JSON.parse(data));
+  });
+});
+
+app.get('/d3code', (req, res) => {
+  const d3CodeFilePath = path.join(__dirname, 'd3code.js');
+
+  fs.readFile(d3CodeFilePath, 'utf8', (err, data) => {
+      if (err) {
+          console.error('Error reading D3.js code:', err);
+          return res.status(500).send('Internal Server Error');
+      }
+
+      res.send(data);
+  });
+});
+
+app.get('/chartcode', (req, res) => {
+  const chartCodeFilePath = path.join(__dirname, 'chartcode.js');
+
+  fs.readFile(chartCodeFilePath, 'utf8', (err, data) => {
+      if (err) {
+          console.error('Error reading Chart.js code:', err);
+          return res.status(500).send('Internal Server Error');
+      }
+
+      res.send(data);
   });
 });
 
