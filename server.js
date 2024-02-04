@@ -51,7 +51,18 @@ app.get('/budget', (req, res) => {
 //app.get('/budget', (req, res) => {
     //res.json(budget);
 //});
+app.get('/budget_data.json', (req, res) => {
+  const dataFilePath = path.join(__dirname, 'budget_data.json');
 
+  fs.readFile(dataFilePath, 'utf8', (err, data) => {
+      if (err) {
+          console.error('Error reading budget data:', err);
+          return res.status(500).send('Internal Server Error');
+      }
+
+      res.json(JSON.parse(data));
+  });
+});
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
