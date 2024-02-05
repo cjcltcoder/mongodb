@@ -7,22 +7,6 @@ const path = require('path');
 
 app.use('/', express.static('public'));
 
- /*const budget = {
-   myBudget: [
-    {
-        title: 'Eat out',
-        budget: 25
-    },
-    {
-        title: 'Rent',
-        budget: 375
-    },
-    {
-        title: 'Car',
-        budget: 110
-    },
-    ]
-};*/
 
 app.get('/hello', (req, res) => {
     res.send('Hello World');
@@ -47,10 +31,6 @@ app.get('/budget', (req, res) => {
     });
   });
   
-
-//app.get('/budget', (req, res) => {
-    //res.json(budget);
-//});
 app.get('/budget_data.json', (req, res) => {
   const dataFilePath = path.join(__dirname, 'budget_data.json');
 
@@ -77,18 +57,6 @@ app.get('/d3code', (req, res) => {
   });
 });
 
-app.get('/chartcode', (req, res) => {
-  const chartCodeFilePath = path.join(__dirname, 'chartcode.js');
-
-  fs.readFile(chartCodeFilePath, 'utf8', (err, data) => {
-      if (err) {
-          console.error('Error reading Chart.js code:', err);
-          return res.status(500).send('Internal Server Error');
-      }
-
-      res.send(data);
-  });
-});
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
