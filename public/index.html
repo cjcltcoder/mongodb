@@ -162,7 +162,7 @@
             });
         }
         function getBudget() {
-            axios.get('/budget')
+            axios.get('http://localhost:3000/budget')
                 .then(function (res) {
                     console.log('Received data from /budget:', res.data);
                     // Check if myBudget is an array with at least one element
@@ -184,7 +184,7 @@
 
     <script>
         function get3dBudget() {
-            axios.get('/d3code')
+            axios.get('http://localhost:3000/d3code')
                 .then(function (response) {
                     const d3Code = response.data;
                     eval(d3Code);

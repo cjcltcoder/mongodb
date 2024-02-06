@@ -1,16 +1,14 @@
+// Budget API
+
 const express = require('express');
+const cors = require('cors');
 const { start } = require('repl');
 const app = express();
 const port = 3000;
 const fs = require('fs');
 const path = require('path');
 
-app.use('/', express.static('public'));
-
-
-app.get('/hello', (req, res) => {
-    res.send('Hello World');
-});
+app.use(cors());
 
 app.get('/budget', (req, res) => {
     const dataFilePath = path.join(__dirname, '/budget_data.json');
