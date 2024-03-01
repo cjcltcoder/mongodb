@@ -1,4 +1,4 @@
-d3.json('/budget_data.json').then(function (data) {
+d3.json('/d3code').then(function (data) {
     console.log('Loaded data:', data);
 
     if (Array.isArray(data.myBudget)) {
