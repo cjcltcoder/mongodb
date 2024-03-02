@@ -66,16 +66,15 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const app = express();
 const port = 3000;
+const path = require('path');
+const fs = require('fs');
 
 const Budget = require('./models/budget_schema'); // Import Mongoose model for budget data
 
 app.use(cors());
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/budget', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect('mongodb://localhost:27017/budget');
 
 app.use(express.static('public'));
 
@@ -93,7 +92,16 @@ app.get('/budget', async (req, res) => {
 app.get('/d3code', async (req, res) => {
   try {
     const budgetData = await Budget.find();
-    res.json(budgetData);
+    const d3CodePath = path.join(__dirname, 'd3code.js');
+    fs.readFile(d3CodePath, 'utf8', (err, data) => {
+      if (err) {
+        console.error('Error reading D3.js code:', err);
+        return res.status(500).send('Internal Server Error');
+      }
+      // Inject budgetData into the JavaScript file
+      const modifiedD3Code = data.replace('// <BudgetData>', `const budgetData = ${JSON.stringify(budgetData)};`);
+      res.type('application/javascript').send(modifiedD3Code);
+    });
   } catch (error) {
     console.error('Error retrieving budget data:', error);
     res.status(500).send('Internal Server Error');
