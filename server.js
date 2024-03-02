@@ -108,6 +108,27 @@ app.get('/d3code', async (req, res) => {
   }
 });
 
+// Middleware to parse JSON request bodies
+app.use(express.json());
+
+app.post('/budget/add', async (req, res) => {
+  try {
+    // Extract data from the request body
+    const { title, budget } = req.body;
+
+    // Create a new document using Mongoose model
+    const newBudget = new Budget({ title, budget });
+
+    // Save the new document to the database
+    await newBudget.save();
+
+    res.status(201).json(newBudget); // Respond with the newly created document
+  } catch (error) {
+    console.error('Error adding new document:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 // Start server
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
